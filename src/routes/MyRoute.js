@@ -1,0 +1,29 @@
+import React from 'react';
+
+import PropTypes from 'prop-types';
+
+import { Route, Redirect } from 'react-router-dom/cjs/react-router-dom.min';
+
+export default function MyRoute({ component: Component, isClosed, ...rest }) {
+  const isLoggedIn = false;
+
+  if (isClosed && !isLoggedIn) {
+    return (
+      <Redirect
+        to={{ pathName: '/login', state: { prevPath: rest.location.pathname } }}
+      />
+    );
+  }
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Route {...rest} component={Component} />;
+}
+
+MyRoute.defaultProps = {
+  isClosed: false,
+};
+
+MyRoute.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
+    .isRequired,
+  isClosed: PropTypes.bool,
+};
