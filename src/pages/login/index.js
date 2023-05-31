@@ -11,7 +11,7 @@ export default function Login() {
   function hanldeClick(e) {
     e.preventDefault();
 
-    dispatch(exampleActios.buttonClick());
+    dispatch(exampleActios.buttonClickRequest());
   }
 
   return (
