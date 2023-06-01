@@ -9,7 +9,4 @@ export const Title = styled.h1`
   }
 `;
 
-export const Paragraph = styled.p`
-  text-align: center;
-  font-size: 40px;
-`;
+export const Paragraph = styled.p``;
