@@ -7,8 +7,8 @@ const request = () =>
   // eslint-disable-next-line
   new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject();
-    }, 2000);
+      resolve();
+    }, 600);
   });
 
 function* exampleRequest() {
