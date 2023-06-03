@@ -30,5 +30,8 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'import/no-extraneous-dependencies': 'off',
     'no-console': 'off',
+    'no-unused-vars': 'off',
+    'no-useless-return': 'off',
+    'react/jsx-no-bind': 'off',
   },
 };
