@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { get } from 'lodash';
 import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 import axios from '../../services/axios';
+import history from '../../services/history';
 import Loading from '../../components/Loading/index';
 import { Container } from '../../styles/GlobalStyles';
 import { AlunoContainer, ProfilePicture } from './styled';
@@ -22,13 +24,36 @@ export default function Alunos() {
     getData();
   }, []);
 
+  async function handleDelete(e, id, index) {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+
+      await axios.delete(`/alunos/${id}`);
+
+      const updatedAlunos = [...alunos];
+      updatedAlunos.splice(index, 1);
+      setAlunos(updatedAlunos);
+
+      setIsLoading(false);
+      toast.success('Aluno deletado com sucesso.');
+    } catch (error) {
+      const status = get(error, 'response.status', 0);
+      if (status === 401) {
+        toast.error('Login necessário.');
+        setIsLoading(false);
+        history.push('/login');
+      }
+    }
+  }
+
   return (
     <Container>
       <Loading isLoading={isLoading} />
       <h1>Alunos</h1>
       <AlunoContainer>
         {alunos &&
-          alunos.map((aluno) => (
+          alunos.map((aluno, index) => (
             <div key={String(aluno.id)}>
               <ProfilePicture>
                 {get(aluno, 'Photos[0].url', false) ? (
@@ -44,7 +69,12 @@ export default function Alunos() {
                 <FaEdit size={16} />
               </Link>
 
-              <Link to={`/aluno/${aluno.id}/delete`}>
+              <Link
+                onClick={(e) => {
+                  handleDelete(e, aluno.id, index);
+                }}
+                to={`/aluno/${aluno.id}/delete`}
+              >
                 <FaWindowClose size={16} />
               </Link>
             </div>
