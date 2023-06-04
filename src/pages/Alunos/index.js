@@ -18,7 +18,6 @@ export default function Alunos() {
     getData();
   }, []);
 
-  console.log(alunos);
   return (
     <Container>
       <h1>Alunos</h1>

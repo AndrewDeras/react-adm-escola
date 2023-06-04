@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
 import { useDispatch } from 'react-redux';
+import { get } from 'lodash';
 
 import * as actions from '../../store/modules/auth/actions';
 import axios from '../../services/axios';
 import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
 
-export default function Login() {
+export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const prevPath = get(props, 'location.state.prevPath', '/');
 
   const dispatch = useDispatch();
 
@@ -30,7 +33,7 @@ export default function Login() {
 
     if (loginErrors) return;
 
-    dispatch(actions.loginRequest({ email, password }));
+    dispatch(actions.loginRequest({ email, password, prevPath }));
 
     // try {
     //   await axios.post('/tokens');
