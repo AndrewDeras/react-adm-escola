@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
 
 import * as actions from '../../store/modules/auth/actions';
 import axios from '../../services/axios';
 import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
+import Loading from '../../components/Loading/index';
 
 export default function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   const prevPath = get(props, 'location.state.prevPath', '/');
 
@@ -34,17 +36,14 @@ export default function Login(props) {
     if (loginErrors) return;
 
     dispatch(actions.loginRequest({ email, password, prevPath }));
-
-    // try {
-    //   await axios.post('/tokens');
-    // } catch (error) {
-    //   console.log(error);
-    // }
   }
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+
       <h1>Login</h1>
+
       <Form onSubmit={handleSubmit}>
         <label htmlFor="email">
           Email:

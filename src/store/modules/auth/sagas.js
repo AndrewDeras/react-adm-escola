@@ -8,7 +8,6 @@ import * as actions from './actions';
 import * as types from '../types';
 
 function* loginRequest({ payload }) {
-  console.log(payload);
   try {
     const response = yield call(axios.post, '/tokens', payload);
     yield put(actions.loginSucces({ ...response.data }));
