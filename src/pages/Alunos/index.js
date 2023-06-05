@@ -8,7 +8,7 @@ import axios from '../../services/axios';
 import history from '../../services/history';
 import Loading from '../../components/Loading/index';
 import { Container } from '../../styles/GlobalStyles';
-import { AlunoContainer, ProfilePicture } from './styled';
+import { AlunoContainer, ProfilePicture, NovoAluno } from './styled';
 
 export default function Alunos() {
   const [alunos, setAlunos] = useState([]);
@@ -51,6 +51,7 @@ export default function Alunos() {
     <Container>
       <Loading isLoading={isLoading} />
       <h1>Alunos</h1>
+      <NovoAluno to="/aluno">Novo Aluno</NovoAluno>
       <AlunoContainer>
         {alunos &&
           alunos.map((aluno, index) => (
