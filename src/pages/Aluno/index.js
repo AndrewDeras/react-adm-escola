@@ -3,6 +3,8 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import validator from 'validator';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../store/modules/auth/actions';
 
 import Loading from '../../components/Loading/index';
 import axios from '../../services/axios';
@@ -12,6 +14,7 @@ import { Container } from '../../styles/GlobalStyles';
 
 export default function Aluno({ match }) {
   const id = get(match, 'params.id', 0);
+  const dispatch = useDispatch();
 
   const [nome, setNome] = useState('');
   const [sobrenome, setSobrenome] = useState('');
@@ -50,7 +53,7 @@ export default function Aluno({ match }) {
     }
   }, [id]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let formErrors = false;
 
@@ -85,6 +88,49 @@ export default function Aluno({ match }) {
     }
 
     if (formErrors) return;
+
+    try {
+      setIsLoading(true);
+      if (id === 0) {
+        const aluno = await axios.post('/alunos', {
+          nome,
+          sobrenome,
+          email,
+          idade,
+          peso,
+          altura,
+        });
+        const { id: alunoId } = aluno.data;
+        setIsLoading(false);
+
+        toast.success('Aluno cadastrado com sucesso.');
+        history.push(`/aluno/${alunoId}/edit`);
+      } else {
+        // update
+        await axios.put(`/alunos/${id}`, {
+          nome,
+          sobrenome,
+          email,
+          idade,
+          peso,
+          altura,
+        });
+        setIsLoading(false);
+        toast.success('Dados do aluno atualizados.');
+
+        history.push(`/aluno/${id}/edit`);
+      }
+    } catch (error) {
+      const errors = get(error, 'response,errors', []);
+      const status = get(error, 'response.status', 0);
+      errors.map((err) => toast.error(err));
+      if (status === 401) {
+        dispatch(actions.loginFailure());
+        toast.error('Login requerido.');
+        history.push('/login');
+      }
+      history.push('/');
+    }
   };
 
   return (
