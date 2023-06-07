@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
 
 import * as actions from '../../store/modules/auth/actions';
-import axios from '../../services/axios';
 import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
 import Loading from '../../components/Loading/index';

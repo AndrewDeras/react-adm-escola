@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import * as colors from '../../config/colors';
 
+export const Title = styled.div`
+  text-align: center;
+`;
+
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 30px;
 
   label {
     display: flex;
@@ -26,4 +30,31 @@ export const Form = styled.form`
   }
 `;
 
-export const Paragraph = styled.p``;
+export const ProfilePicture = styled.div`
+  margin: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 20px;
+  position: relative;
+
+  img {
+    height: 180px;
+    width: 180px;
+    border-radius: 50%;
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background: ${colors.primaryColor};
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+`;

@@ -4,16 +4,18 @@ import PropTypes from 'prop-types';
 import validator from 'validator';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import * as actions from '../../store/modules/auth/actions';
+import { FaUserCircle, FaEdit } from 'react-icons/fa';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
+import * as actions from '../../store/modules/auth/actions';
 import Loading from '../../components/Loading/index';
 import axios from '../../services/axios';
 import history from '../../services/history';
-import { Form } from './styled';
+import { Form, ProfilePicture, Title } from './styled';
 import { Container } from '../../styles/GlobalStyles';
 
 export default function Aluno({ match }) {
-  const id = get(match, 'params.id', 0);
+  const id = get(match, 'params.id', '');
   const dispatch = useDispatch();
 
   const [nome, setNome] = useState('');
@@ -22,6 +24,7 @@ export default function Aluno({ match }) {
   const [idade, setIdade] = useState('');
   const [peso, setPeso] = useState('');
   const [altura, setAltura] = useState('');
+  const [photo, setPhoto] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -31,7 +34,8 @@ export default function Aluno({ match }) {
         setIsLoading(true);
         const response = await axios.get(`/alunos/${id}`);
         const { data } = response;
-        const photo = get(data, 'Photos[0]', '');
+        const foto = get(data, 'Photos[0]', '');
+        setPhoto(foto);
 
         setNome(data.nome);
         setSobrenome(data.sobrenome);
@@ -42,7 +46,7 @@ export default function Aluno({ match }) {
 
         setIsLoading(false);
       } catch (error) {
-        const errors = get(error, 'response,errors', []);
+        const errors = get(error, 'response.errors', []);
         errors.map((err) => toast.error(err));
         setIsLoading(false);
         history.push('/');
@@ -135,7 +139,21 @@ export default function Aluno({ match }) {
 
   return (
     <Container>
-      <h1>{id ? 'Editar aluno' : 'Novo luno'}</h1>
+      <Title>
+        <h1>{id ? 'Editar aluno' : 'Novo luno'}</h1>
+      </Title>
+      {id && (
+        <ProfilePicture>
+          {photo ? (
+            <img crossOrigin="" src={photo.url} alt={nome} />
+          ) : (
+            <FaUserCircle size={180} />
+          )}
+          <Link to={`/fotos/${id}`}>
+            <FaEdit size={24} />
+          </Link>
+        </ProfilePicture>
+      )}
       <Loading isLoading={isLoading} />
       <Form onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="nome">

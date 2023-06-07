@@ -1,12 +1,31 @@
 import styled from 'styled-components';
+import * as colors from '../../config/colors';
 
-export const Title = styled.h1`
-  background: grey;
-  small {
-    font-size: 12pt;
-    margin-left: 12px;
-    color: purple;
-  }
+export const Title = styled.div`
+  text-align: center;
 `;
 
-export const Paragraph = styled.p``;
+export const Form = styled.form`
+  label {
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    border: 5px dashed ${colors.primaryColor};
+    margin: 30px auto;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      height: 180px;
+      width: 180px;
+    }
+  }
+
+  input {
+    display: none;
+  }
+`;
